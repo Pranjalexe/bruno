@@ -120,6 +120,33 @@ bruno index add ./docs --recursive
 
 ---
 
+## 💻 CLI Commands Reference
+
+Bruno uses a modern Typer CLI interface. Here are all the available commands:
+
+### `bruno config`
+Manage your configuration and API keys.
+- `bruno config init`: Interactive wizard to set up your `.env` file (stores OpenAI/Groq API keys).
+- `bruno config show`: Print your current configuration settings.
+
+### `bruno index`
+Manage the ChromaDB local knowledge base.
+- `bruno index add <path> [--recursive] [--collection <name>]`: Parses, chunks, and embeds files into your local RAG database.
+- `bruno index list`: Shows statistics about your vector database (total documents, collections).
+- `bruno index clear [--collection <name>] [--yes]`: Wipes the vector database.
+
+### `bruno debug`
+The core debugging agent.
+- `bruno debug "<error_message>"`: Debug an issue. Bruno will autonomously use tools to find the solution.
+- `bruno debug "<error_message>" --file <path> --context <lines>`: Attach specific log file lines to the prompt.
+
+### `bruno research`
+The deep-dive research agent.
+- `bruno research "<topic>"`: Let Bruno compile a research report on a topic.
+- `bruno research "<topic>" --depth deep`: Instructs Bruno to do a more thorough, multi-step web search before answering.
+
+---
+
 ## ⚡ Usage Examples
 
 Once configured and indexed, Bruno is ready to assist you.
