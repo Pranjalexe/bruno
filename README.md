@@ -175,3 +175,58 @@ bruno index clear --yes
 - **Streaming UI**: Tokens are streamed directly to your terminal in real-time using `Rich` components.
 - **Parallel Indexing**: The document ingestion pipeline uses thread-pooling with semaphores to ensure blazing fast parsing without freezing your CPU.
 - **Persistent Chat Memory**: Bruno remembers the context of your conversation per-directory. You can run `bruno debug` multiple times in a row and the agent will remember what you were just working on using a local SQLite checkpointer!
+
+---
+
+## 🛠️ Development & Contributing
+
+Want to extend Bruno or run tests locally?
+
+### Running Tests
+Bruno has 100% test coverage using `pytest`.
+```bash
+# Run all tests
+pytest tests/ -v
+
+# Run with coverage report
+pytest tests/ -v --cov=bruno --cov-report=term-missing
+```
+
+### Code Formatting & Linting
+We use `ruff` for fast linting and formatting, and `mypy` for static type checking.
+```bash
+ruff check src/ tests/
+ruff format src/ tests/
+mypy src/bruno/ --ignore-missing-imports
+```
+
+### Adding a New MCP Server
+Bruno's tools are dynamically loaded via MCP. To add a new capability:
+1. Create a new server file in `src/bruno/mcp_servers/` using the `@mcp.tool()` decorator.
+2. Expose the server command via `stdio`.
+3. Add the server command to the `mcp_servers` dict in `src/bruno/config.py`.
+
+---
+
+## 🆘 Troubleshooting & FAQ
+
+| Issue | Cause | Fix |
+|-------|-------|-----|
+| `ModuleNotFoundError: No module named 'bruno'` | Package not installed in editable mode | Run `pip install -e ".[dev]"` |
+| `chromadb.errors.NoIndexException` | Querying an empty knowledge base | Run `bruno index add ./docs` first |
+| `openai.AuthenticationError` | Invalid or missing API key | Run `bruno config init` or set `OPENAI_API_KEY` |
+| Agent loops infinitely | Context window filled with tool errors | Ensure MCP servers print debug logs to `sys.stderr`, not `stdout` |
+| `RuntimeError: This event loop is already running` | Nested asyncio calls in sync Typer CLI | Use `asyncio.run()` only at the top-level Typer command |
+
+---
+
+## ⚙️ Environment Variables Reference
+
+Bruno stores configuration in `~/.bruno_data/.env` by default, but you can override these via your terminal:
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `OPENAI_API_KEY` | Your OpenAI API key for LLM generation | *Required* |
+| `BRUNO_DATA_DIR` | Directory for SQLite memory and ChromaDB | `~/.bruno_data/` |
+| `BRUNO_DEFAULT_MODEL` | The LLM model to use | `gpt-4o-mini` |
+| `BRUNO_LOG_LEVEL` | Logging verbosity (`INFO`, `DEBUG`) | `INFO` |
