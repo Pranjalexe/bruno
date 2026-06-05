@@ -1,0 +1,40 @@
+import os
+
+import typer
+
+from bruno.cli.formatters import display_table
+from bruno.config import get_settings
+
+app = typer.Typer(help="Manage configuration.")
+
+@app.command("show")
+def show_cmd():
+    """Show current configuration."""
+    settings = get_settings()
+
+    rows = []
+    for k, v in settings.model_dump().items():
+        if "key" in k.lower() and v:
+            v = "***REDACTED***"
+        rows.append([k, str(v)])
+
+    display_table("Bruno Configuration", ["Key", "Value"], rows)
+
+@app.command("init")
+def init_cmd():
+    """Interactive setup wizard."""
+    typer.echo("Bruno Setup Wizard")
+    typer.echo("------------------")
+
+    api_key = typer.prompt("OpenAI API Key (or press Enter to skip)", default="", show_default=False)
+
+    if api_key:
+        env_path = ".env"
+        mode = "a" if os.path.exists(env_path) else "w"
+        with open(env_path, mode) as f:
+            if mode == "a":
+                f.write("\n")
+            f.write(f"OPENAI_API_KEY={api_key}\n")
+        typer.echo("Saved OPENAI_API_KEY to .env file.")
+
+    typer.echo("Setup complete!")
