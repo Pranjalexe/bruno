@@ -1,6 +1,6 @@
 # 🐕 Bruno — The Terminal Research Agent
 
-[![CI](https://github.com/youruser/bruno/actions/workflows/ci.yml/badge.svg)](https://github.com/youruser/bruno/actions/workflows/ci.yml)
+[![CI](https://github.com/Pranjalexe/bruno/actions/workflows/ci.yml/badge.svg)](https://github.com/Pranjalexe/bruno/actions/workflows/ci.yml)
 
 > An intelligent CLI assistant that helps developers debug errors, research topics, and query local knowledge — all without leaving the terminal.
 
@@ -90,7 +90,7 @@ Follow these easy steps to get Bruno running on your local machine.
 Clone the repository and install it in "editable" mode so you can tweak the code while using the CLI globally.
 
 ```bash
-git clone https://github.com/yourusername/bruno.git
+git clone https://github.com/Pranjalexe/bruno.git
 cd bruno
 python -m venv .venv
 
