@@ -2,7 +2,7 @@
 LangGraph StateGraph assembly for Bruno.
 """
 from langchain_core.tools import BaseTool
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 import sqlite3
 from langgraph.checkpoint.sqlite import SqliteSaver
 from langgraph.graph import END, START, StateGraph
@@ -34,7 +34,7 @@ def create_bruno_agent(settings: BrunoSettings, tools: list[BaseTool]):
     """
     Creates and compiles the Bruno agent graph.
     """
-    llm = ChatOpenAI(model=settings.default_model, temperature=0, api_key=settings.openai_api_key)
+    llm = ChatGoogleGenerativeAI(model=settings.default_model, temperature=0, google_api_key=settings.gemini_api_key)
     if tools:
         llm_with_tools = llm.bind_tools(tools)
     else:

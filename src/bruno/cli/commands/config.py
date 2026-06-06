@@ -26,15 +26,16 @@ def init_cmd():
     typer.echo("Bruno Setup Wizard")
     typer.echo("------------------")
 
-    api_key = typer.prompt("OpenAI API Key (or press Enter to skip)", default="", show_default=False)
+    api_key = typer.prompt("Google Gemini API Key (or press Enter to skip)", default="", show_default=False)
 
     if api_key:
-        env_path = ".env"
-        mode = "a" if os.path.exists(env_path) else "w"
+        settings = get_settings()
+        env_path = settings.data_dir / ".env"
+        mode = "a" if env_path.exists() else "w"
         with open(env_path, mode) as f:
             if mode == "a":
                 f.write("\n")
-            f.write(f"OPENAI_API_KEY={api_key}\n")
-        typer.echo("Saved OPENAI_API_KEY to .env file.")
+            f.write(f"BRUNO_GEMINI_API_KEY={api_key}\n")
+        typer.echo(f"Saved BRUNO_GEMINI_API_KEY to {env_path}")
 
     typer.echo("Setup complete!")
