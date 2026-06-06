@@ -10,7 +10,7 @@ readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.11"
 authors = [
-    {name = "Your Name", email = "you@example.com"},
+    {name = "Pranjal Maheshwari", email = "f20221658@pilani.bits-pilani.ac.in"},
 ]
 keywords = ["cli", "ai", "agent", "rag", "llm", "mcp", "langgraph"]
 classifiers = [
