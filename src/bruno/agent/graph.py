@@ -1,11 +1,11 @@
 """
 LangGraph StateGraph assembly for Bruno.
 """
-import sqlite3
+
 
 from langchain_core.tools import BaseTool
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langgraph.checkpoint.sqlite import SqliteSaver
+from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import END, START, StateGraph
 from langgraph.prebuilt import ToolNode, tools_condition
 
@@ -86,11 +86,5 @@ def create_bruno_agent(settings: BrunoSettings, tools: list[BaseTool]):
         builder.add_edge("research_agent", "formatter")
 
     builder.add_edge("direct_answer", "formatter")
-    # Ensure the directory exists
-    db_path = settings.data_dir / "checkpoints.db"
-    settings.data_dir.mkdir(parents=True, exist_ok=True)
-
-    # Use SqliteSaver
-    conn = sqlite3.connect(db_path, check_same_thread=False)
-    memory = SqliteSaver(conn)
+    memory = MemorySaver()
     return builder.compile(checkpointer=memory)

@@ -9,6 +9,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class BrunoSettings(BaseSettings):
     gemini_api_key: str = ""
+    tavily_api_key: str = ""
     groq_api_key: str = ""
     data_dir: Path = Path.home() / ".bruno_data"
     default_model: str = "gemini-2.5-flash"
@@ -18,7 +19,7 @@ class BrunoSettings(BaseSettings):
 
     model_config = SettingsConfigDict(
         env_prefix="BRUNO_",
-        env_file=".env",
+        env_file=[".env", str(Path.home() / ".bruno_data" / ".env")],
         env_file_encoding="utf-8",
         extra="ignore",
     )

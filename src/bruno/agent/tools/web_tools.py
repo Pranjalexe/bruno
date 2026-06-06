@@ -1,12 +1,14 @@
 """
-Web search tool using a free search API (DuckDuckGo).
+Web search tool using Tavily API.
 """
 from langchain_core.tools import tool
+
+from bruno.config import get_settings
 
 
 @tool
 def web_search(query: str, max_results: int = 5) -> str:
-    """Search the web for information about a topic.
+    """Search the web for information about a topic using Tavily.
     
     Args:
         query: The search query
@@ -15,13 +17,16 @@ def web_search(query: str, max_results: int = 5) -> str:
     Returns:
         Formatted string with search results.
     """
+    settings = get_settings()
+    if not settings.tavily_api_key:
+        return "Error: BRUNO_TAVILY_API_KEY is not set. Run `bruno config init` to set it."
+
     try:
-        from langchain_community.tools import DuckDuckGoSearchRun
-        search = DuckDuckGoSearchRun()
-        # The DuckDuckGoSearchRun handles the query directly.
-        # It doesn't natively take max_results in the run method, but it limits internally.
-        return search.invoke(query)
-    except ImportError:
-        return "Error: duckduckgo-search package is missing. Please install it."
+        from langchain_community.tools.tavily_search import TavilySearchResults
+        search = TavilySearchResults(
+            max_results=max_results,
+            tavily_api_key=settings.tavily_api_key
+        )
+        return str(search.invoke(query))
     except Exception as e:
         return f"Error performing web search: {e}"
