@@ -60,12 +60,12 @@ async def run_research(topic: str, depth: str = "shallow"):
                         tool_name = event["name"]
                         live.update(Panel(Markdown(content + f"\n\n*Running tool: `{tool_name}`...*"), title="[bold bright_cyan]Bruno[/bold bright_cyan]", border_style="bright_cyan"))
 
-    except ResourceExhausted:
-        display_error("Your free tier is over and stop the work when my free tier is completely used up.")
+    except ResourceExhausted as e:
+        display_error(f"Your free tier is over and stop the work when my free tier is completely used up.\nExact Error: {e}")
         raise typer.Exit(1)
     except Exception as e:
         if "429" in str(e) or "quota" in str(e).lower():
-            display_error("Your free tier is over and stop the work when my free tier is completely used up.")
+            display_error(f"Your free tier is over and stop the work when my free tier is completely used up.\nExact Error: {e}")
             raise typer.Exit(1)
         display_error(f"Agent execution failed: {e}")
 
