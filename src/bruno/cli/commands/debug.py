@@ -47,27 +47,26 @@ async def run_debug(error_message: str, file: Path | None = None, context_lines:
         }
 
         mcp_client = await load_mcp_tools(settings)
-        async with mcp_client as client:
-            mcp_tools = client.get_tools()
-            all_tools = [rag_search, web_search] + mcp_tools
+        mcp_tools = await mcp_client.get_tools()
+        all_tools = [rag_search, web_search] + mcp_tools
 
-            agent = create_bruno_agent(settings, tools=all_tools)
+        agent = create_bruno_agent(settings, tools=all_tools)
 
-            content = ""
-            with Live(Panel(Markdown("Thinking..."), title="[bold bright_cyan]Bruno[/bold bright_cyan]", border_style="bright_cyan"), refresh_per_second=15) as live:
-                async for event in agent.astream_events(state_input, config, version="v2"):
-                    if event["event"] == "on_chat_model_stream":
-                        chunk = event["data"]["chunk"]
-                        if isinstance(chunk.content, str) and chunk.content:
-                            content += chunk.content
-                            live.update(Panel(Markdown(content), title="[bold bright_cyan]Bruno[/bold bright_cyan]", border_style="bright_cyan"))
-                    elif event["event"] == "on_chat_model_start":
-                        # Reset content for a new generation (e.g. after tools)
-                        content = ""
-                        live.update(Panel(Markdown("Thinking..."), title="[bold bright_cyan]Bruno[/bold bright_cyan]", border_style="bright_cyan"))
-                    elif event["event"] == "on_tool_start":
-                        tool_name = event["name"]
-                        live.update(Panel(Markdown(content + f"\n\n*Running tool: `{tool_name}`...*"), title="[bold bright_cyan]Bruno[/bold bright_cyan]", border_style="bright_cyan"))
+        content = ""
+        with Live(Panel(Markdown("Thinking..."), title="[bold bright_cyan]Bruno[/bold bright_cyan]", border_style="bright_cyan"), refresh_per_second=15) as live:
+            async for event in agent.astream_events(state_input, config, version="v2"):
+                if event["event"] == "on_chat_model_stream":
+                    chunk = event["data"]["chunk"]
+                    if isinstance(chunk.content, str) and chunk.content:
+                        content += chunk.content
+                        live.update(Panel(Markdown(content), title="[bold bright_cyan]Bruno[/bold bright_cyan]", border_style="bright_cyan"))
+                elif event["event"] == "on_chat_model_start":
+                    # Reset content for a new generation (e.g. after tools)
+                    content = ""
+                    live.update(Panel(Markdown("Thinking..."), title="[bold bright_cyan]Bruno[/bold bright_cyan]", border_style="bright_cyan"))
+                elif event["event"] == "on_tool_start":
+                    tool_name = event["name"]
+                    live.update(Panel(Markdown(content + f"\n\n*Running tool: `{tool_name}`...*"), title="[bold bright_cyan]Bruno[/bold bright_cyan]", border_style="bright_cyan"))
 
     except Exception as e:
         if type(e).__name__ == "ResourceExhausted" or "429" in str(e) or "quota" in str(e).lower() or "401" in str(e) or "connect" in str(e).lower():

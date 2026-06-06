@@ -26,15 +26,20 @@ def init_cmd():
     typer.echo("------------------")
 
     api_key = typer.prompt("Google Gemini API Key (or press Enter to skip)", default="", show_default=False)
+    tavily_key = typer.prompt("Tavily API Key for Web Search (or press Enter to skip)", default="", show_default=False)
 
-    if api_key:
+    if api_key or tavily_key:
         settings = get_settings()
         env_path = settings.data_dir / ".env"
         mode = "a" if env_path.exists() else "w"
         with open(env_path, mode) as f:
             if mode == "a":
                 f.write("\n")
-            f.write(f"BRUNO_GEMINI_API_KEY={api_key}\n")
-        typer.echo(f"Saved BRUNO_GEMINI_API_KEY to {env_path}")
+            if api_key:
+                f.write(f"BRUNO_GEMINI_API_KEY={api_key}\n")
+                typer.echo(f"Saved BRUNO_GEMINI_API_KEY to {env_path}")
+            if tavily_key:
+                f.write(f"BRUNO_TAVILY_API_KEY={tavily_key}\n")
+                typer.echo(f"Saved BRUNO_TAVILY_API_KEY to {env_path}")
 
     typer.echo("Setup complete!")
