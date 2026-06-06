@@ -49,7 +49,7 @@ def list_cmd():
 
 @app.command("clear")
 def clear_cmd(
-    collection: Annotated[str, typer.Option("--collection", "-c", help="Specific collection to clear")] = None,
+    collection: Annotated[str | None, typer.Option("--collection", "-c", help="Specific collection to ingest into (defaults to 'knowledge_base')")] = None,
     yes: Annotated[bool, typer.Option("--yes", "-y", help="Skip confirmation")] = False,
 ):
     """Clear a collection or all collections."""

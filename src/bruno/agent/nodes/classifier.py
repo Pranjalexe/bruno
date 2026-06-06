@@ -2,7 +2,7 @@
 Classifies the user's intent.
 """
 from langchain_core.messages import HumanMessage, SystemMessage
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 from bruno.agent.state import BrunoState
 from bruno.config import get_settings
@@ -16,7 +16,7 @@ Respond with ONLY the intent label, nothing else."""
 
 def classifier_node(state: BrunoState) -> dict:
     settings = get_settings()
-    llm = ChatOpenAI(model=settings.default_model, temperature=0, api_key=settings.openai_api_key)
+    llm = ChatGoogleGenerativeAI(model=settings.default_model, temperature=0, api_key=settings.gemini_api_key)
 
     # If intent was already forced (e.g. via CLI command explicitly), don't re-classify
     if state.get("intent"):
@@ -28,7 +28,7 @@ def classifier_node(state: BrunoState) -> dict:
     ]
 
     response = llm.invoke(messages)
-    intent = response.content.strip().lower()
+    intent = str(response.content).strip().lower()
 
     # Validation fallback
     if intent not in ["debug", "research", "direct_answer"]:

@@ -61,7 +61,7 @@ class BrunoVectorStore:
             ids=ids
         )
 
-    def query(self, query: str, collection_name: str = "knowledge_base", n_results: int = 5, filters: dict = None) -> list[Document]:
+    def query(self, query: str, collection_name: str = "knowledge_base", n_results: int = 5, filters: dict | None = None) -> list[Document]:
         collection = self.get_or_create_collection(collection_name)
 
         kwargs = {
