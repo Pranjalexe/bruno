@@ -12,6 +12,7 @@ from bruno.cli.commands.config import app as config_app
 from bruno.cli.commands.debug import debug_cmd
 from bruno.cli.commands.index import app as index_app
 from bruno.cli.commands.research import research_cmd
+from bruno.cli.commands.clean import clean_cmd
 
 app = typer.Typer(
     help="Bruno — The Terminal Research Agent",
@@ -35,6 +36,7 @@ def main_callback(
 # Add subcommands
 app.command("debug")(debug_cmd)
 app.command("research")(research_cmd)
+app.command("clean")(clean_cmd)
 app.add_typer(index_app, name="index")
 app.add_typer(config_app, name="config")
 

@@ -129,6 +129,10 @@ Manage your configuration and API keys.
 - `bruno config init`: Interactive wizard to set up your `.env` file (stores Gemini API keys).
 - `bruno config show`: Print your current configuration settings.
 
+### `bruno clean`
+Clear all local memory and caches.
+- `bruno clean`: Wipes the local database, checkpoints, and RAG index from `~/.bruno_data` **but preserves your `.env` API keys**.
+
 ### `bruno index`
 Manage the ChromaDB local knowledge base.
 - `bruno index add <path> [--recursive] [--collection <name>]`: Parses, chunks, and embeds files into your local RAG database.
