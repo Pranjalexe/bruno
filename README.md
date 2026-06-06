@@ -230,3 +230,9 @@ Bruno stores configuration in `~/.bruno_data/.env` by default, but you can overr
 | `BRUNO_DATA_DIR` | Directory for SQLite memory and ChromaDB | `~/.bruno_data/` |
 | `BRUNO_DEFAULT_MODEL` | The LLM model to use | `gemini-2.5-flash` |
 | `BRUNO_LOG_LEVEL` | Logging verbosity (`INFO`, `DEBUG`) | `INFO` |
+
+---
+
+## 🤝 Contributors
+
+- **Pranjal Maheshwari** ([@Pranjalexe](https://github.com/Pranjalexe)) - Creator & Lead Developer
