@@ -84,7 +84,7 @@ Follow these easy steps to get Bruno running on your local machine.
 
 ### Prerequisites
 - Python 3.10 or higher
-- An OpenAI API Key (or Groq API key)
+- A Google Gemini API Key (free from Google AI Studio)
 
 ### 1. Clone & Install
 Clone the repository and install it in "editable" mode so you can tweak the code while using the CLI globally.
@@ -109,7 +109,7 @@ Run the setup wizard to securely store your API keys in `~/.bruno_data/.env`.
 ```bash
 bruno config init
 ```
-*(When prompted, enter your OpenAI API key).*
+*(When prompted, enter your Google Gemini API key).*
 
 ### 3. Build Your Knowledge Base
 Point Bruno to your local documents, codebase, or logs to build the RAG index. Bruno uses parallel processing to chew through large directories quickly!
@@ -126,7 +126,7 @@ Bruno uses a modern Typer CLI interface. Here are all the available commands:
 
 ### `bruno config`
 Manage your configuration and API keys.
-- `bruno config init`: Interactive wizard to set up your `.env` file (stores OpenAI/Groq API keys).
+- `bruno config init`: Interactive wizard to set up your `.env` file (stores Gemini API keys).
 - `bruno config show`: Print your current configuration settings.
 
 ### `bruno index`
@@ -214,7 +214,7 @@ Bruno's tools are dynamically loaded via MCP. To add a new capability:
 |-------|-------|-----|
 | `ModuleNotFoundError: No module named 'bruno'` | Package not installed in editable mode | Run `pip install -e ".[dev]"` |
 | `chromadb.errors.NoIndexException` | Querying an empty knowledge base | Run `bruno index add ./docs` first |
-| `openai.AuthenticationError` | Invalid or missing API key | Run `bruno config init` or set `OPENAI_API_KEY` |
+| `google.api_core.exceptions.InvalidArgument` | Invalid or missing API key | Run `bruno config init` or set `BRUNO_GEMINI_API_KEY` |
 | Agent loops infinitely | Context window filled with tool errors | Ensure MCP servers print debug logs to `sys.stderr`, not `stdout` |
 | `RuntimeError: This event loop is already running` | Nested asyncio calls in sync Typer CLI | Use `asyncio.run()` only at the top-level Typer command |
 
@@ -226,7 +226,7 @@ Bruno stores configuration in `~/.bruno_data/.env` by default, but you can overr
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `OPENAI_API_KEY` | Your OpenAI API key for LLM generation | *Required* |
+| `BRUNO_GEMINI_API_KEY` | Your Google Gemini API key for LLM generation | *Required* |
 | `BRUNO_DATA_DIR` | Directory for SQLite memory and ChromaDB | `~/.bruno_data/` |
-| `BRUNO_DEFAULT_MODEL` | The LLM model to use | `gpt-4o-mini` |
+| `BRUNO_DEFAULT_MODEL` | The LLM model to use | `gemini-2.5-flash` |
 | `BRUNO_LOG_LEVEL` | Logging verbosity (`INFO`, `DEBUG`) | `INFO` |

@@ -2,8 +2,8 @@ import asyncio
 import hashlib
 import os
 from typing import Annotated
-
 import typer
+from google.api_core.exceptions import ResourceExhausted
 from langchain_core.messages import HumanMessage
 from rich.live import Live
 from rich.markdown import Markdown
@@ -20,8 +20,8 @@ from bruno.config import get_settings
 async def run_research(topic: str, depth: str = "shallow"):
     settings = get_settings()
 
-    if not settings.openai_api_key:
-        display_error("OPENAI_API_KEY is not set. Run `bruno config init`.")
+    if not settings.gemini_api_key:
+        display_error("BRUNO_GEMINI_API_KEY is not set. Run `bruno config init`.")
         raise typer.Exit(1)
 
     query = f"{topic} (Provide a {depth} research summary)"
@@ -60,7 +60,13 @@ async def run_research(topic: str, depth: str = "shallow"):
                         tool_name = event["name"]
                         live.update(Panel(Markdown(content + f"\n\n*Running tool: `{tool_name}`...*"), title="[bold bright_cyan]Bruno[/bold bright_cyan]", border_style="bright_cyan"))
 
+    except ResourceExhausted:
+        display_error("Your free tier is over and stop the work when my free tier is completely used up.")
+        raise typer.Exit(1)
     except Exception as e:
+        if "429" in str(e) or "quota" in str(e).lower():
+            display_error("Your free tier is over and stop the work when my free tier is completely used up.")
+            raise typer.Exit(1)
         display_error(f"Agent execution failed: {e}")
 
 def research_cmd(

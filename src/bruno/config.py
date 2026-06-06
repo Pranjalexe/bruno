@@ -8,10 +8,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class BrunoSettings(BaseSettings):
-    openai_api_key: str = ""
+    gemini_api_key: str = ""
     groq_api_key: str = ""
     data_dir: Path = Path.home() / ".bruno_data"
-    default_model: str = "gpt-4o-mini"
+    default_model: str = "gemini-2.5-flash"
     embedding_model: str = "all-MiniLM-L6-v2"
     log_level: str = "INFO"
     mcp_servers: dict = {}
