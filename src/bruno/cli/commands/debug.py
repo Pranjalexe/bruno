@@ -18,7 +18,7 @@ from bruno.cli.formatters import display_api_error, display_error
 from bruno.config import get_settings
 
 
-async def run_debug(error_message: str, file: Path = None, context_lines: int = 50, verbose: bool = False):
+async def run_debug(error_message: str, file: Path | None = None, context_lines: int = 50, verbose: bool = False):
     settings = get_settings()
 
     if not settings.gemini_api_key:
@@ -77,7 +77,7 @@ async def run_debug(error_message: str, file: Path = None, context_lines: int = 
 
 def debug_cmd(
     error_message: str = typer.Argument(..., help="The error message or description"),
-    file: Annotated[Path, typer.Option("--file", "-f", help="Optional log file to include as context")] = None,
+    file: Annotated[Path | None, typer.Option("--file", "-f", help="Optional log file to include as context")] = None,
     context: Annotated[int, typer.Option("--context", "-c", help="Number of lines to read from the log file tail")] = 50,
 ):
     """Debug an error or issue."""

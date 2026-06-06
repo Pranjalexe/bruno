@@ -10,10 +10,10 @@ from langchain_mcp_adapters.client import MultiServerMCPClient
 from bruno.config import BrunoSettings
 
 
-async def load_mcp_tools(settings: BrunoSettings) -> tuple[MultiServerMCPClient, list[BaseTool]]:
+async def load_mcp_tools(settings: BrunoSettings) -> MultiServerMCPClient:
     """Connects to configured MCP servers and returns their tools as LangChain tools.
     
-    Returns a tuple of (MCP client context manager, list of tools).
+    Returns the MCP client context manager.
     The caller is responsible for entering and exiting the client context.
     """
     server_dir = Path(__file__).parent.parent.parent / "mcp_servers"
