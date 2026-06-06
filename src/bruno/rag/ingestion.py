@@ -124,10 +124,10 @@ def ingest_path(path: Path | str, store: BrunoVectorStore, recursive: bool = Fal
 
     # Limit concurrency to 4 to prevent CPU/memory spikes on small machines
     max_workers = min(4, len(files_to_process) or 1)
-    
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
         future_to_file = {executor.submit(process_file, f): f for f in files_to_process}
-        
+
         for future in concurrent.futures.as_completed(future_to_file):
             f = future_to_file[future]
             try:

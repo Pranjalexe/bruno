@@ -1,5 +1,5 @@
-import pytest
 from typer.testing import CliRunner
+
 from bruno.cli.app import app
 
 runner = CliRunner()

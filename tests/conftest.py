@@ -1,7 +1,9 @@
 import os
+
 import pytest
-from pathlib import Path
+
 from bruno.config import BrunoSettings
+
 
 @pytest.fixture
 def temp_data_dir(tmp_path):
