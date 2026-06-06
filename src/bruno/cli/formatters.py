@@ -21,9 +21,9 @@ def display_error(error: str):
 
 def display_api_error(e: Exception):
     err_str = str(e).lower()
-    
+
     title = "[bold red]🚨 API Error[/bold red]"
-    
+
     if "per minute" in err_str:
         wait_msg = "⏱️ **Action Required:** You have hit the **Requests Per Minute** limit. Please wait **1 minute** and try again."
         title = "[bold red]🚨 Rate Limit Exceeded[/bold red]"
@@ -40,7 +40,7 @@ def display_api_error(e: Exception):
         wait_msg = "⚠️ **Action Required:** An unexpected API error occurred."
 
     raw_error_text = str(e).strip()
-    
+
     markdown_content = f"""
 {wait_msg}
 
