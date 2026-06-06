@@ -109,7 +109,7 @@ Run the setup wizard to securely store your API keys in `~/.bruno_data/.env`.
 ```bash
 bruno config init
 ```
-*(When prompted, enter your Google Gemini API key).*
+*(When prompted, enter your Google Gemini API key and Tavily Search API key).*
 
 ### 3. Build Your Knowledge Base
 Point Bruno to your local documents, codebase, or logs to build the RAG index. Bruno uses parallel processing to chew through large directories quickly!
@@ -227,6 +227,7 @@ Bruno stores configuration in `~/.bruno_data/.env` by default, but you can overr
 | Variable | Description | Default |
 |----------|-------------|---------|
 | `BRUNO_GEMINI_API_KEY` | Your Google Gemini API key for LLM generation | *Required* |
+| `BRUNO_TAVILY_API_KEY` | Your Tavily API key for live web research | *Optional* |
 | `BRUNO_DATA_DIR` | Directory for SQLite memory and ChromaDB | `~/.bruno_data/` |
 | `BRUNO_DEFAULT_MODEL` | The LLM model to use | `gemini-2.5-flash` |
 | `BRUNO_LOG_LEVEL` | Logging verbosity (`INFO`, `DEBUG`) | `INFO` |
