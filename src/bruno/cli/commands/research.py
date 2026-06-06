@@ -13,7 +13,7 @@ from bruno.agent.graph import create_bruno_agent
 from bruno.agent.tools.mcp_tools import load_mcp_tools
 from bruno.agent.tools.rag_tools import rag_search
 from bruno.agent.tools.web_tools import web_search
-from bruno.cli.formatters import display_error, display_response, display_spinner
+from bruno.cli.formatters import display_error, display_api_error, display_response, display_spinner
 from bruno.config import get_settings
 
 
@@ -61,11 +61,11 @@ async def run_research(topic: str, depth: str = "shallow"):
                         live.update(Panel(Markdown(content + f"\n\n*Running tool: `{tool_name}`...*"), title="[bold bright_cyan]Bruno[/bold bright_cyan]", border_style="bright_cyan"))
 
     except ResourceExhausted as e:
-        display_error(f"Your free tier is over and stop the work when my free tier is completely used up.\nExact Error: {e}")
+        display_api_error(e)
         raise typer.Exit(1)
     except Exception as e:
-        if "429" in str(e) or "quota" in str(e).lower():
-            display_error(f"Your free tier is over and stop the work when my free tier is completely used up.\nExact Error: {e}")
+        if "429" in str(e) or "quota" in str(e).lower() or "401" in str(e) or "connect" in str(e).lower():
+            display_api_error(e)
             raise typer.Exit(1)
         display_error(f"Agent execution failed: {e}")
 
